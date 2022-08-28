@@ -109,6 +109,9 @@ $("#trash").droppable({
   }
 });
 
+$("#modalDueDate").datepicker({
+  minDate: 1
+});
 
 // modal was triggered
 $("#task-form-modal").on("show.bs.modal", function() {
@@ -144,6 +147,7 @@ $("#task-form-modal .btn-primary").click(function() {
   }
 });
 
+
 $(".list-group").on("click", "p", function() {
   var text = $(this)
     .text()
@@ -153,7 +157,7 @@ $(".list-group").on("click", "p", function() {
     .addClass("form-control")
     .val(text);
 
-    $(this).replaceWith(textInput);
+    // $(this).replaceWith(textInput);
     textInput.trigger("focus");
 });
 
@@ -172,7 +176,7 @@ $(".list-group").on("blur", "textarea", function() {
     tasks[status][index].text = text;
     saveTasks();
 
-    var taskP =$("<p>")
+    var taskP = $("<p>")
     addClass("m-1")
     .text(text);
 
@@ -180,26 +184,29 @@ $(".list-group").on("blur", "textarea", function() {
 });
 
 $(".list-group").on("click", "span", function () {
-    var date =$(this)
-    .text()
-    .trim();
+  var date = $(this)
+  .text()
+  .trim();
 
-    var dateInput = $("<input>")
-    .attr("type", "text")
-    .addClass("form-control")
-    .val(date);
+  var dateInput = $("<input>")
+  .attr("type", "text")
+  .addClass("form-control")
+  .val(date);
+  $(this).replaceWith(dateInput);
 
-    $(this).replaceWith(dateInput);
-
-    dateInput.trigger("focus");
+  dateInput.datepicker({
+    minDate: 1,
+    onClose: function() {
+      $(this).trigger("change");
+    }
+  });
+  dateInput.trigger("focus");
 });
 
-$(".list-group").on("blur", "input[type='text']", function () {
-    var date = $(this)
-    .val()
-    .trim();
+$(".list-group").on("change", "input[type='text']", function () {
+    var date = $(this).val();
 
-    var status= $(this)
+    var status = $(this)
     .closest(".list-group")
     .attr("id")
     .replace("list-", "");
@@ -214,9 +221,10 @@ $(".list-group").on("blur", "input[type='text']", function () {
     var taskSpan = $("<span>")
     .addClass("badge badge-primary badge-pill")
     .text(date);
-
     $(this).replaceWith(taskSpan);
+    auditTask($(taskSpan).closest(".list-group-item"));
 });
+
 
 // remove all tasks
 $("#remove-tasks").on("click", function() {
@@ -224,6 +232,7 @@ $("#remove-tasks").on("click", function() {
     tasks[key].length = 0;
     $("#list-" + key).empty();
   }
+  console.log(tasks);
   saveTasks();
 });
 
