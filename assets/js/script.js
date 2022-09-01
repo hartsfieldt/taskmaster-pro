@@ -67,7 +67,7 @@ var auditTask = function(taskEl) {
   // apply new class if task is near/over due date
   if (moment().isAfter(time)) {
     $(taskEl).addClass("list-group-item-danger");
-  } 
+  }
   else if (Math.abs(moment().diff(time, "days")) <= 2) {
     $(taskEl).addClass("list-group-item-warning");
   }
@@ -122,7 +122,7 @@ $(".card .list-group").sortable({
     saveTasks();
   },
   stop: function(event) {
-    $(this).removeClass("dropover");
+    $(this).removeClass(".dropover");
   }
 });
 
@@ -211,7 +211,7 @@ $(".list-group").on("blur", "textarea", function() {
     .closest(".list-group-item")
     .index();
 
-  // update task in array and re-save to localstorage
+  // update task in array and re-save to local storage
   tasks[status][index].text = text;
   saveTasks();
 
@@ -264,7 +264,7 @@ $(".list-group").on("change", "input[type='text']", function() {
     .closest(".list-group-item")
     .index();
 
-  // update task in array and re-save to localstorage
+  // update task in array and re-save to local storage
   tasks[status][index].date = date;
   saveTasks();
 
